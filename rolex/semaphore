@@ -7,7 +7,7 @@ echo "Clone AnyKernul"
 git clone -j32 https://github.com/z4nyx/AnyKernel
 echo "Done"
 GCC="$(pwd)/gcc/bin/aarch64-linux-android-"
-tanggal=$(TZ=Asia/Jakarta date +'%H%M-%d%m%y')
+tanggal=$(TZ=Asia/Kuala_Lumpur date +'%H%M-%d%m%y')
 START=$(date +"%s")
 export ARCH=arm64
 export KBUILD_BUILD_USER=Haikal
