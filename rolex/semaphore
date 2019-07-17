@@ -20,8 +20,6 @@ function sticker() {
 }
 # Send info plox channel
 function sendinfo() {
-        # Send info plox channel
-function sendinfo() {
         curl -s -X POST "https://api.telegram.org/bot$token/sendMessage" \
                         -d chat_id=$chat_id \
                         -d "disable_web_page_preview=true" \
