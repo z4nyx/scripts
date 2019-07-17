@@ -20,11 +20,13 @@ function sticker() {
 }
 # Send info plox channel
 function sendinfo() {
+        # Send info plox channel
+function sendinfo() {
         curl -s -X POST "https://api.telegram.org/bot$token/sendMessage" \
                         -d chat_id=$chat_id \
                         -d "disable_web_page_preview=true" \
-                        -d "parse_mode=html" \
-                        -d text="<b>CosmicKernel CAF</b> CI Triggered%0ABuild started on <code>SemaphoreCI</code>%0AFor device <b>Xiaomi Redmi 4A (rolex)</b>%0Abranch <code>$(git rev-parse --abbrev-ref HEAD)</code> (Android 9.0/Pie)%0AUnder commit <code>$(git log --pretty=format:'"%h : %s"' -1)</code>%0AUsing compiler: <code>$(${GCC}gcc --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/  */ /g')</code>%0AStarted on <code>$(TZ=Asia/Kuala_Lumpur date)</code>%0A<b>Build Status:</b> #Stable"
+                        -d "parse_mode=markdown" \
+                        -d text="*CosmicKernel CAF* CI Triggered%0ABuild started on `SemaphoreCI`%0AFor device *Xiaomi Redmi 4A (rolex)*%0Abranch `$(git rev-parse --abbrev-ref HEAD)` (Android 9.0/Pie)%0AUnder commit `$(git log --pretty=format:'"%h : %s"' -1)`%0AUsing compiler: `$(${GCC}gcc --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/  */ /g')`%0AStarted on `$(TZ=Asia/Kuala_Lumpur date)`%0A*Build Status:* #Stable"
 }
 # Push kernel to channel
 function push() {
