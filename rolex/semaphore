@@ -71,7 +71,7 @@ CONFIG=rolex_defconfig
 BRANCH="$(git rev-parse --abbrev-ref HEAD)"
 THREAD="-j32"
 LOAD="-l32"
-CROSS_COMPILE="$(pwd)/gcc/bin/aarch64-elf-gcc-"
+CROSS_COMPILE="$(pwd)/gcc/bin/aarch64-elf-"
 
 # Export
 export ARCH=arm64
