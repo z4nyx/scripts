@@ -56,7 +56,7 @@ function tg_sendstick() {
 
 # Fin prober
 function fin() {
-	tg_sendinfo "$(echo "Build took $(($DIFF / 60)) minute(s) and $(($DIFF % 60)) seconds. // #sunny")"
+	tg_sendinfo "$(echo "Build took $(($DIFF / 60)) minute(s) and $(($DIFF % 60)) seconds.)"
 }
 
 #
@@ -71,12 +71,12 @@ CONFIG=rolex_defconfig
 BRANCH="$(git rev-parse --abbrev-ref HEAD)"
 THREAD="-j32"
 LOAD="-l32"
-CROSS_COMPILE="$(pwd)/gcc/bin/aarch64-linux-android-"
+CROSS_COMPILE="$(pwd)/gcc/bin/aarch64-linux-gnu-"
 
 # Export
 export ARCH=arm64
 export SUBARCH=arm64
-export KBUILD_BUILD_USER=Haikal
+export KBUILD_BUILD_USER=z4nyx
 export CROSS_COMPILE
 export USE_CCACHE=1
 
@@ -86,8 +86,8 @@ install-package --update-new ccache bc bash git-core gnupg build-essential \
 	m4 gcc libtool zlib1g-dev libstdc++6
 
 # Clone toolchain
-git clone -j32 --depth=1 https://github.com/najahiiii/aarch64-linux-gnu.git -b 4.9-mirror gcc
-# Clone AnyKernel2
+git clone -j32 --depth=1 https://github.com/teamlions/aarch64-linux-gnu-7.3 gcc
+# Clone AnyKernel3
 git clone https://github.com/z4nyx/AnyKernel3 AnyKernel
 
 # Build start
