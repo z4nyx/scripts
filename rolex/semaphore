@@ -86,7 +86,7 @@ install-package --update-new ccache bc bash git-core gnupg build-essential \
 	m4 gcc libtool zlib1g-dev libstdc++6
 
 # Clone toolchain
-git clone -j32 --depth=1 https://github.com/teamlions/aarch64-linux-gnu-7.3 gcc
+git clone -j32 --depth=1 https://github.com/najahiiii/aarch64-linux-gnu.git -b linaro8-20190402 gcc
 # Clone AnyKernel3
 git clone https://github.com/z4nyx/AnyKernel3 AnyKernel
 
