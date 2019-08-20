@@ -71,7 +71,7 @@ CONFIG=rolex_defconfig
 BRANCH="$(git rev-parse --abbrev-ref HEAD)"
 THREAD="-j32"
 LOAD="-l32"
-CROSS_COMPILE="$(pwd)/gcc/bin/aarch64-linux-gnu-"
+CROSS_COMPILE="$(pwd)/gcc/bin/aarch64-elf-"
 
 # Export
 export ARCH=arm64
@@ -79,6 +79,7 @@ export SUBARCH=arm64
 export KBUILD_BUILD_USER=z4nyx
 export CROSS_COMPILE
 export USE_CCACHE=1
+export CCACHE_COMPRESS=1
 
 # Install build package
 install-package --update-new ccache bc bash git-core gnupg build-essential \
@@ -86,7 +87,7 @@ install-package --update-new ccache bc bash git-core gnupg build-essential \
 	m4 gcc libtool zlib1g-dev libstdc++6
 
 # Clone toolchain
-git clone -j32 --depth=1 https://github.com/najahiiii/aarch64-linux-gnu.git -b linaro8-20190402 gcc
+git clone -j32 --depth=1 https://github.com/najahiiii/priv-toolchains -b arm64 gcc
 # Clone AnyKernel3
 git clone https://github.com/z4nyx/AnyKernel3 AnyKernel
 
