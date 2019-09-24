@@ -5,7 +5,7 @@ git clone https://github.com/z4nyx/AnyKernel3.git -b rolex --depth=1 AnyKernel
 echo "Done"
 GCC="$(pwd)/gcc/bin/aarch64-elf-"
 IMAGE=$(pwd)/out/arch/arm64/boot/Image.gz-dtb
-TANGGAL=$(date +"%F:%s")
+TANGGAL=$(date +"%F-%S")
 START=$(date +"%s")
 export ARCH=arm64
 export KBUILD_BUILD_USER=z4nyx
