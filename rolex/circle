@@ -13,7 +13,7 @@ export KBUILD_BUILD_HOST=circle
 # sticker plox
 function sticker() {
     curl -s -X POST "https://api.telegram.org/bot$token/sendSticker" \
-        -d sticker="CAADAQADFAADvi-SJSWX0SQK2vALFgQ" \
+        -d sticker="CAADAQADGgADvi-SJQABLuvyNucwbBYE" \
         -d chat_id=$chat_id
 }
 # Send info plox channel
