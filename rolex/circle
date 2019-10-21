@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 echo "Cloning dependencies"
-git clone https://github.com/najahiiii/priv-toolchains -b elf/gcc-9.2.0/arm64 --depth=1 gcc
-git clone https://github.com/z4nyx/AnyKernel3.git -b rolex --depth=1 AnyKernel
+git clone -q https://github.com/najahiiii/priv-toolchains -b elf/gcc-9.2.0/arm64 --depth=1 gcc
+git clone -q https://github.com/z4nyx/AnyKernel3.git -b rolex --depth=1 AnyKernel
 echo "Done"
 GCC="$(pwd)/gcc/bin/aarch64-elf-"
 IMAGE=$(pwd)/out/arch/arm64/boot/Image.gz-dtb
@@ -22,7 +22,7 @@ function sendinfo() {
         -d chat_id="$chat_id" \
         -d "disable_web_page_preview=true" \
         -d "parse_mode=html" \
-        -d text="<b>• Amethyst •</b>%0ABuild started on <code>Circle CI/CD</code>%0AFor device <b>Xiaomi Redmi 4A</b> (rolex)%0Abranch <code>$(git rev-parse --abbrev-ref HEAD)</code> (Android 9.0/Pie)%0AUnder commit <code>$(git log --pretty=format:'"%h : %s"' -1)</code>%0AUsing compiler: <code>$(${GCC}gcc --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/  */ /g')</code>%0AStarted on <code>$(date)</code>%0A<b>Build Status:</b> #Nightly"
+        -d text="<b>• Amethyst-CAF •</b>%0ABuild started on <code>Circle CI/CD</code>%0AFor device <b>Xiaomi Redmi 4A</b> (rolex)%0Abranch <code>$(git rev-parse --abbrev-ref HEAD)</code> (Android 9.0/Pie)%0AUnder commit <code>$(git log --pretty=format:'"%h : %s"' -1)</code>%0AUsing compiler: <code>$(${GCC}gcc --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/  */ /g')</code>%0AStarted on <code>$(date)</code>%0A<b>Build Status:</b> #Nightly"
 }
 # Push kernel to channel
 function push() {
@@ -45,8 +45,8 @@ function finerr() {
 }
 # Compile plox
 function compile() {
-    make -s -C $(pwd) -j$(nproc) O=out rolex_defconfig
-    make -C $(pwd) CROSS_COMPILE="${GCC}" O=out -j$(nproc) -l50 2>&1| tee build.log
+    make -s -C $(pwd) -j$(nproc --all) O=out rolex_defconfig
+    make -C $(pwd) CROSS_COMPILE="${GCC}" O=out -j$(nproc -all) -l50 2>&1| tee build.log
         if ! [ -a "$IMAGE" ]; then
             finerr
             exit 1
