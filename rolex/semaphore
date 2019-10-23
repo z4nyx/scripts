@@ -9,7 +9,7 @@ TANGGAL=$(date +"%F-%S")
 START=$(date +"%s")
 export ARCH=arm64
 export KBUILD_BUILD_USER=z4nyx
-export KBUILD_BUILD_HOST=circle
+export KBUILD_BUILD_HOST=semaphore
 # sticker plox
 function sticker() {
     curl -s -X POST "https://api.telegram.org/bot$token/sendSticker" \
@@ -22,7 +22,7 @@ function sendinfo() {
         -d chat_id="$chat_id" \
         -d "disable_web_page_preview=true" \
         -d "parse_mode=html" \
-        -d text="<b>• Amethyst-CAF •</b>%0ABuild started on <code>Circle CI/CD</code>%0AFor device <b>Xiaomi Redmi 4A</b> (rolex)%0Abranch <code>$(git rev-parse --abbrev-ref HEAD)</code> (Android 9.0/Pie)%0AUnder commit <code>$(git log --pretty=format:'"%h : %s"' -1)</code>%0AUsing compiler: <code>$(${GCC}gcc --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/  */ /g')</code>%0AStarted on <code>$(date)</code>%0A<b>Build Status:</b> #Nightly"
+        -d text="<b>• Amethyst CAF •</b>%0ABuild started on <code>Semaphore CI/CD</code>%0AFor device <b>Xiaomi Redmi 4A</b> (rolex)%0Abranch <code>$(git rev-parse --abbrev-ref HEAD)</code> (Android 9.0/Pie)%0AUnder commit <code>$(git log --pretty=format:'"%h : %s"' -1)</code>%0AUsing compiler: <code>$(${GCC}gcc --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/  */ /g')</code>%0AStarted on <code>$(date)</code>%0A<b>Build Status:</b> #Nightly"
 }
 # Push kernel to channel
 function push() {
