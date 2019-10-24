@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 echo "Cloning dependencies"
-git clone  https://github.com/najahiiii/priv-toolchains -b non-elf/gcc-9.2.0/arm64 --depth=1 gcc
+git clone  https://github.com/rokibhasansagar/linaro-toolchain-latest -b latest-7 --depth=1 gcc
 git clone  https://github.com/z4nyx/AnyKernel3.git -b rolex --depth=1 AnyKernel
 echo "Done"
 GCC="$(pwd)/gcc/bin/aarch64-linux-gnu-"
@@ -46,8 +46,8 @@ function finerr() {
 }
 # Compile plox
 function compile() {
-    make -s -C $(pwd) -j$(nproc --all) O=out rolex_defconfig
-    make -C $(pwd) CROSS_COMPILE="${GCC}" O=out -j$(nproc -all)
+    make -s -C $(pwd) -j8 O=out rolex_defconfig
+    make -C $(pwd) CROSS_COMPILE="${GCC}" O=out -j8
         if ! [ -a "$IMAGE" ]; then
             finerr
             exit 1
