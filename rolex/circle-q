@@ -47,12 +47,14 @@ function finerr() {
 }
 # Compile plox
 function compile() {
-    make -s -C $(pwd) O=out rolex_defconfig
-    make -C $(pwd) CROSS_COMPILE="${GCC}" CROSS_COMPILE_ARM32="${GCC32}"  O=out -j32
-        if ! [ -a "$IMAGE" ]; then
-            finerr
-            exit 1
-        fi
+    make -s -C "$(pwd)" -j"$(nproc)" O=out rolex_defconfig
+    make -C "$(pwd)" O=out -j$(nproc) \
+                   CROSS_COMPILE="${GCC}" \
+                   CROSS_COMPILE_ARM32="${GCC32}"
+    if ! [ -a "$IMAGE" ]; then
+        finerr
+        exit 1
+    fi
     cp out/arch/arm64/boot/Image.gz-dtb AnyKernel
 }
 # Zipping
