@@ -1,0 +1,70 @@
+#!/usr/bin/env bash
+echo "Cloning dependencies"
+git clone -j32 https://github.com/najahiiii/priv-toolchains -b elf/gcc-9.2.0/arm --depth=1 gcc32
+git clone -j32 https://github.com/najahiiii/priv-toolchains -b elf/gcc-9.2.0/arm64 --depth=1 gcc
+git clone -j32 https://github.com/z4nyx/AnyKernel3.git -b rolex --depth=1 AnyKernel
+echo "Done"
+GCC="$(pwd)/gcc/bin/aarch64-elf-"
+GCC32="$(pwd)/gcc32/bin/arm-eabi-"
+IMAGE=$(pwd)/out/arch/arm64/boot/Image.gz-dtb
+TANGGAL=$(date +"%F-%S")
+START=$(date +"%s")
+export ARCH=arm64
+export KBUILD_BUILD_USER=z4nyx
+export KBUILD_BUILD_HOST=circle
+# sticker plox
+function sticker() {
+    curl -s -X POST "https://api.telegram.org/bot$token/sendSticker" \
+        -d sticker="CAADAQADGgADvi-SJQABLuvyNucwbBYE" \
+        -d chat_id=$chat_id
+}
+# Send info plox channel
+function sendinfo() {
+    curl -s -X POST "https://api.telegram.org/bot$token/sendMessage" \
+        -d chat_id="$chat_id" \
+        -d "disable_web_page_preview=true" \
+        -d "parse_mode=html" \
+        -d text="<b>• Amethyst CAF •</b>%0ABuild started on <code>Circle CI/CD</code>%0AFor device <b>Xiaomi Redmi 4A</b> (rolex)%0Abranch <code>$(git rev-parse --abbrev-ref HEAD)</code> (Android 10.0/Ten/Q)%0AUnder commit <code>$(git log --pretty=format:'"%h : %s"' -1)</code>%0AUsing compiler: <code>$(${GCC}gcc --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/  */ /g')</code>%0AStarted on <code>$(date)</code>%0A<b>Build Status:</b> #Nightly"
+}
+# Push kernel to channel
+function push() {
+    cd AnyKernel || exit 1
+    ZIP=$(echo *.zip)
+    curl -F document=@$ZIP "https://api.telegram.org/bot$token/sendDocument" \
+        -F chat_id="$chat_id" \
+        -F "disable_web_page_preview=true" \
+        -F "parse_mode=html" \
+        -F caption="Build took $(($DIFF / 60)) minute(s) and $(($DIFF % 60)) second(s). | For <b>Xiaomi Redmi 4A (rolex)</b>"
+}
+# Fin Error
+function finerr() {
+    curl -s -X POST "https://api.telegram.org/bot$token/sendMessage" \
+        -d chat_id="$chat_id" \
+        -d "disable_web_page_preview=true" \
+        -d "parse_mode=markdown" \
+        -d text="Build throw an error(s)"
+    exit 1
+}
+# Compile plox
+function compile() {
+    make -s -C $(pwd) O=out rolex_defconfig
+    make -C $(pwd) CROSS_COMPILE="${GCC}" CROSS_COMPILE_ARM32="${GCC32}"  O=out -j32
+        if ! [ -a "$IMAGE" ]; then
+            finerr
+            exit 1
+        fi
+    cp out/arch/arm64/boot/Image.gz-dtb AnyKernel
+}
+# Zipping
+function zipping() {
+    cd AnyKernel || exit 1
+    zip -r9 Amethyst-CAF-rolex-Q-${TANGGAL}.zip *
+    cd .. #well
+}
+sticker
+sendinfo
+compile
+zipping
+END=$(date +"%s")
+DIFF=$(($END - $START))
+push
