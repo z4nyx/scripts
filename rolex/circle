@@ -1,13 +1,11 @@
 #!/usr/bin/env bash
 echo "Cloning dependencies"
-git clone -j32 https://github.com/najahiiii/priv-toolchains -b elf/gcc-9.2.0/arm --depth=1 gcc32
-git clone -j32 https://github.com/najahiiii/priv-toolchains -b elf/gcc-9.2.0/arm64 --depth=1 gcc
+git clone -j32 https://github.com/rokibhasansagar/linaro-toolchain-latest -b latest-7 --depth=1 gcc
 git clone -j32 https://github.com/z4nyx/AnyKernel3.git -b rolex --depth=1 AnyKernel
 echo "Done"
-GCC="$(pwd)/gcc/bin/aarch64-elf-"
-GCC32="$(pwd)/gcc32/bin/arm-eabi-"
+GCC="$(pwd)/gcc/bin/aarch64-linux-gnu-"
 IMAGE=$(pwd)/out/arch/arm64/boot/Image.gz-dtb
-TANGGAL=$(date +"%M%S-%F")
+TANGGAL=$(date +"%S-%F")
 START=$(date +"%s")
 export ARCH=arm64
 export KBUILD_BUILD_USER=z4nyx
@@ -26,7 +24,7 @@ function sendinfo() {
         -d chat_id="$chat_id" \
         -d "disable_web_page_preview=true" \
         -d "parse_mode=html" \
-        -d text="<b>Light-Born Kernel new build!</b>%0AStarted on: <code>Circle CI/CD</code>%0ADevice: <b>Xiaomi Redmi 4A</b> (rolex)%0ABranch: <code>$(git rev-parse --abbrev-ref HEAD)</code>%0AUnder commit: <code>$(git log --pretty=format:'"%h : %s"' -1)</code>%0ADate: <code>$(date)</code>%0A<b>Build Status:</b> #Nightly"
+        -d text="<b>LightBorn Kernel CI</b>%0AStarted on: <code>Circle CI/CD</code>%0ADevice: <b>Xiaomi Redmi 4A</b> (rolex)%0ABranch: <code>$(git rev-parse --abbrev-ref HEAD)</code>%0AUnder commit: <code>$(git log --pretty=format:'"%h : %s"' -1)</code>%0ACompiler: <code>aarch64-linux-gnu-gcc (Linaro GCC) 7.4.1</code>%0ADate: <code>$(date)</code>%0A<b>Build Status:</b> #Nightly"
 }
 # Push kernel to channel
 function push() {
@@ -50,9 +48,7 @@ function finerr() {
 # Compile plox
 function compile() {
     make -s -C "$(pwd)" -j"$(nproc)" O=out rolex_defconfig
-    make -C "$(pwd)" O=out -j$(nproc) \
-                   CROSS_COMPILE="${GCC}" \
-                   CROSS_COMPILE_ARM32="${GCC32}"
+    make -C "$(pwd)" CROSS_COMPILE="${GCC}" O=out -j"$(nproc)"
     if ! [ -a "$IMAGE" ]; then
         finerr
         exit 1
@@ -62,7 +58,7 @@ function compile() {
 # Zipping
 function zipping() {
     cd AnyKernel || exit 1
-    zip -r9 Light-Born_Hitotsu_${TANGGAL}.zip *
+    zip -r9 LightBorn-Hitotsu-${TANGGAL}.zip *
     cd .. #well
 }
 sticker
