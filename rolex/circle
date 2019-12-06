@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 echo "Cloning dependencies"
-git clone -j32 https://github.com/rokibhasansagar/linaro-toolchain-latest -b latest-7 --depth=1 gcc
+git clone -j32 https://github.com/z4nyx/linaro-gcc-elf -b latest-7 --depth=1 gcc
 git clone -j32 https://github.com/z4nyx/AnyKernel3.git -b rolex --depth=1 AnyKernel
 echo "Done"
-GCC="$(pwd)/gcc/bin/aarch64-linux-gnu-"
+GCC="$(pwd)/gcc/bin/aarch64-elf-"
 IMAGE=$(pwd)/out/arch/arm64/boot/Image.gz-dtb
 TANGGAL=$(date +"%S-%F")
 START=$(date +"%s")
@@ -24,7 +24,7 @@ function sendinfo() {
         -d chat_id="$chat_id" \
         -d "disable_web_page_preview=true" \
         -d "parse_mode=html" \
-        -d text="<b>LightBorn Kernel CI</b>%0AStarted on: <code>Circle CI/CD</code>%0ADevice: <b>Xiaomi Redmi 4A</b> (rolex)%0ABranch: <code>$(git rev-parse --abbrev-ref HEAD)</code>%0AUnder commit: <code>$(git log --pretty=format:'"%h : %s"' -1)</code>%0ACompiler: <code>aarch64-linux-gnu-gcc (Linaro GCC) 7.4.1</code>%0ADate: <code>$(date)</code>%0A<b>Build Status:</b> #Nightly"
+        -d text="<b>LightBorn Kernel CI</b>%0AStarted on: <code>Circle CI/CD</code>%0ADevice: <b>Xiaomi Redmi 4A</b> (rolex)%0ABranch: <code>$(git rev-parse --abbrev-ref HEAD)</code>%0AUnder commit: <code>$(git log --pretty=format:'"%h : %s"' -1)</code>%0ACompiler: <code>aarch64-elf-gcc (Linaro GCC) 7.5.0</code>%0ADate: <code>$(date)</code>%0A<b>Build Status:</b> #Nightly"
 }
 # Push kernel to channel
 function push() {
