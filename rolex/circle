@@ -24,7 +24,7 @@ function sendinfo() {
         -d chat_id="$chat_id" \
         -d "disable_web_page_preview=true" \
         -d "parse_mode=html" \
-        -d text="<b>LightBorn Kernel CI</b>%0AStarted on: <code>Circle CI/CD</code>%0ADevice: <b>Xiaomi Redmi 4A</b> (rolex)%0ABranch: <code>$(git rev-parse --abbrev-ref HEAD)</code>%0AUnder commit: <code>$(git log --pretty=format:'"%h : %s"' -1)</code>%0ACompiler: <code>aarch64-elf-gcc (Linaro GCC) 7.5.0</code>%0ADate: <code>$(date)</code>%0A<b>Build Status:</b> #Nightly"
+        -d text="<b>LightBorn Kernel CI</b>%0AStarted on: <code>Circle CI/CD</code>%0ADevice: <b>Xiaomi Redmi 4A</b> (rolex)%0ABranch: <code>$(git rev-parse --abbrev-ref HEAD)</code>%0AUnder Commit: <code>$(git log --pretty=format:'"%h : %s"' -1)</code>%0AToolchain: <code>aarch64-elf-gcc (Linaro GCC) 7.5.0</code>%0ADate: <code>$(date)</code>%0A<b>Build Status:</b> #Nightly"
 }
 # Push kernel to channel
 function push() {
@@ -58,7 +58,7 @@ function compile() {
 # Zipping
 function zipping() {
     cd AnyKernel || exit 1
-    zip -r9 LightBorn-Hitotsu-${TANGGAL}.zip *
+    zip -r9 LightBorn-Hitotsu-rolex-${TANGGAL}.zip *
     cd .. #well
 }
 sticker
