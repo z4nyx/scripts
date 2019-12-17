@@ -32,7 +32,7 @@ function push() {
     cd AnyKernel || exit 1
     ZIP=$(echo *.zip)
     curl -F document=@$ZIP "https://api.telegram.org/bot$token/sendDocument" \
-        -F chat_id="$chat_id" \
+        -F chat_id="$chat_id"
 }
 # Fin Error
 function finerr() {
