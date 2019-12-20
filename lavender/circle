@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 echo "Cloning dependencies"
-git clone https://github.com/crdroidandroid/android_prebuilts_clang_host_linux-x86_clang-5900059 --depth=1 clang
-git clone --depth=1 https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9 -b android-9.0.0_r51 stock
-git clone --depth=1 https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/arm/arm-linux-androideabi-4.9 -b android-9.0.0_r51 stock_32
+git clone --depth=1 https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86 -b android-10.0.0_20 clang
+git clone --depth=1 https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9 -b android-10.0.0_r20 stock
+git clone --depth=1 https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/arm/arm-linux-androideabi-4.9 -b android-10.0.0_r20 stock_32
 git clone https://github.com/z4nyx/AnyKernel3.git -b lavender --depth=1 AnyKernel
 echo "Done"
 IMAGE="$(pwd)/out/arch/arm64/boot/Image.gz-dtb"
