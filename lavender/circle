@@ -1,15 +1,14 @@
 #!/usr/bin/env bash
 echo "Cloning dependencies"
-git clone --depth=1 https://github.com/crdroidandroid/android_prebuilts_clang_host_linux-x86_clang-6032204 clang
-git clone --depth=1 https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9 -b android-10.0.0_r20 stock
-git clone --depth=1 https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/arm/arm-linux-androideabi-4.9 -b android-10.0.0_r20 stock_32
+git clone https://github.com/najahiiii/priv-toolchains.git -b elf/gcc-10.0.0/arm --depth=1 gcc32
+git clone https://github.com/najahiiii/priv-toolchains.git -b elf/gcc-10.0.0/arm64 --depth=1 gcc
 git clone https://github.com/z4nyx/AnyKernel3.git -b lavender --depth=1 AnyKernel
 echo "Done"
+GCC="$(pwd)/gcc/bin/aarch64-elf-"
+GCC32="$(pwd)/gcc32/bin/arm-eabi-"
 IMAGE="$(pwd)/out/arch/arm64/boot/Image.gz-dtb"
-TANGGAL=$(date +"%y%m%d-%H%M")
+TANGGAL=$(date +"%Y%m%d-%H")
 BRANCH="$(git rev-parse --abbrev-ref HEAD)"
-PATH="$(pwd)/clang/bin:$(pwd)/stock/bin:$(pwd)/stock_32/bin:${PATH}"
-KBUILD_COMPILER_STRING="$($(pwd)/clang/bin/clang --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/ */ /g')" 
 export ARCH=arm64
 export KBUILD_BUILD_USER=z4nyx
 export KBUILD_BUILD_HOST=circle
@@ -25,7 +24,7 @@ function sendinfo() {
         -d chat_id="$chat_id" \
         -d "disable_web_page_preview=true" \
         -d "parse_mode=html" \
-        -d text="New build available!%0ADevice : <code>Xiaomi Redmi Note 7/7S</code>%0AToolchain : <code>${KBUILD_COMPILER_STRING}</code>%0ABranch : <code>${BRANCH}</code>%0ACommit Point : <code>$(git log --pretty=format:'"%h : %s"' -1)</code>"
+        -d text="New build available!%0ADevice : <code>Xiaomi Redmi Note 7/7S</code>%0AToolchain : <code>$(${GCC}gcc --version | head -n 1 | perl -pe 's/\(https.*?\)//gs' | sed  -e 's/  */ /g')</code>%0ABranch : <code>${BRANCH}</code>%0ACommit Point : <code>$(git log --pretty=format:'"%h : %s"' -1)</code>"
 }
 # Push kernel to channel
 function push() {
@@ -45,13 +44,10 @@ function finerr() {
 }
 # Compile plox
 function compile() {
-    make O=out ARCH=arm64 lavender-perf_defconfig
-    make -j$(nproc) O=out \
-                    ARCH=arm64 \
-                    CC=clang \
-                    CLANG_TRIPLE=aarch64-linux-gnu- \
-                    CROSS_COMPILE=aarch64-linux-android- \
-                    CROSS_COMPILE_ARM32=arm-linux-androideabi-
+    make -s -C "$(pwd)" -j"$(nproc)" O=out lavender_defconfig
+    make -C "$(pwd)" O=out -j$(nproc) \
+                   CROSS_COMPILE="${GCC}" \
+                   CROSS_COMPILE_ARM32="${GCC32}"
 
     if ! [ -a "$IMAGE" ]; then
         finerr
@@ -62,7 +58,7 @@ function compile() {
 # Zipping
 function zipping() {
     cd AnyKernel || exit 1
-    zip -r9 LightBorn-Hitotsu-lavender-${TANGGAL}.zip *
+    zip -r9 LightBorn-lavender-${TANGGAL}.zip *
     cd .. #well
 }
 compile
