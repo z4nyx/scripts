@@ -53,10 +53,13 @@ function buildsucs() {
 }
 # Compile plox
 function compile() {
-    make -s -C "$(pwd)" -j"$(nproc)" O=out lavender_defconfig
-    make -C "$(pwd)" O=out -j$(nproc) \
-                   CROSS_COMPILE="${GCC}" \
-                   CROSS_COMPILE_ARM32="${GCC32}"
+    make -j$(nproc) O=out ARCH=arm64 lavender_defconfig
+    make -j$(nproc) O=out \
+                    ARCH=arm64 \
+                    CC=clang \
+                    CLANG_TRIPLE=aarch64-linux-gnu- \
+                    CROSS_COMPILE=aarch64-linux-android- \
+                    CROSS_COMPILE_ARM32=arm-linux-androideabi-
 
     if ! [ -a "$IMAGE" ]; then
         finerr
