@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 echo "Cloning dependencies"
-git clone https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/arm/arm-linux-androideabi-4.9 -b android-10.0.0_r20 --depth=1 gcc32
-git clone https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9 -b android-10.0.0_r20 --depth=1 gcc
+git clone https://github.com/KudProject/arm-linux-androideabi-4.9 --depth=1 gcc32
+git clone https://github.com/KudProject/aarch64-linux-android-4.9 --depth=1 gcc
 git clone https://github.com/z4nyx/AnyKernel3.git -b lavender --depth=1 AnyKernel
 echo "Done"
 GCC="$(pwd)/gcc/bin/aarch64-linux-android-"
@@ -42,6 +42,14 @@ function finerr() {
         -d text="Build throw an error(s)"
     exit 1
 }
+# Build Success
+function buildsucs() {
+    curl -s -X POST "https://api.telegram.org/bot$token/sendMessage" \
+        -d chat_id="$haikal" \
+        -d "disable_web_page_preview=true" \
+        -d "parse_mode=markdown" \
+        -d text="Build Success. Congratulations!"
+}
 # Compile plox
 function compile() {
     make -s -C "$(pwd)" -j"$(nproc)" O=out lavender_defconfig
@@ -53,13 +61,14 @@ function compile() {
         finerr
         exit 1
     fi
+    buildsucs
     cp out/arch/arm64/boot/Image.gz-dtb AnyKernel
 }
 # Zipping
 function zipping() {
     cd AnyKernel || exit 1
     zip -r9 LightBorn-lavender-${TANGGAL}.zip *
-    cd .. #well
+    cd ..
 }
 compile
 zipping
