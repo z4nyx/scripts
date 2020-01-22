@@ -72,7 +72,7 @@ function compile() {
 # Zipping
 function zipping() {
     cd AnyKernel || exit 1
-    zip -r9 LightBorn-MIUI-Pie-lavender-${TANGGAL}.zip *
+    zip -r9 LightBorn-EAS-MIUI-9-lavender-${TANGGAL}.zip *
     cd ..
 }
 compile
