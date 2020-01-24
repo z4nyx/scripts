@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 echo "Cloning dependencies"
 git clone https://github.com/crdroidandroid/android_prebuilts_clang_host_linux-x86_clang-6032204 --depth=1 clang
-git clone --depth=1 https://github.com/z4nyx/linaro -b arm/latest-7 gcc32
-git clone --depth=1 https://github.com/z4nyx/linaro -b arm64/latest-7 gcc
+git clone --depth=1 https://github.com/KudProject/arm-linux-androideabi-4.9 gcc32
+git clone --depth=1 https://github.com/KudProject/aarch64-linux-android-4.9 gcc
 git clone https://github.com/z4nyx/AnyKernel3.git -b lavender --depth=1 AnyKernel
 echo "Done"
 KERNEL_DIR=$(pwd)
 IMAGE="${KERNEL_DIR}/out/arch/arm64/boot/Image.gz-dtb"
-TANGGAL=$(date +"%Y%m%d-%M")
+TANGGAL=$(date +"%Y%m%d-%H")
 BRANCH="$(git rev-parse --abbrev-ref HEAD)"
 PATH="${KERNEL_DIR}/clang/bin:${KERNEL_DIR}/gcc/bin:${KERNEL_DIR}/gcc32/bin:${PATH}"
 export KBUILD_COMPILER_STRING="$(${KERNEL_DIR}/clang/bin/clang --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/  */ /g')"
@@ -59,8 +59,8 @@ function compile() {
                     ARCH=arm64 \
                     CC=clang \
                     CLANG_TRIPLE=aarch64-linux-gnu- \
-                    CROSS_COMPILE=aarch64-linux-gnu- \
-                    CROSS_COMPILE_ARM32=arm-linux-gnueabi-
+                    CROSS_COMPILE=aarch64-linux-android- \
+                    CROSS_COMPILE_ARM32=arm-linux-androideabi-
 
     if ! [ -a "$IMAGE" ]; then
         finerr
