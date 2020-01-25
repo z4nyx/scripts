@@ -13,11 +13,11 @@ PATH="${KERNEL_DIR}/clang/bin:${KERNEL_DIR}/gcc/bin:${KERNEL_DIR}/gcc32/bin:${PA
 export KBUILD_COMPILER_STRING="$(${KERNEL_DIR}/clang/bin/clang --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/  */ /g')"
 export ARCH=arm64
 export KBUILD_BUILD_USER=z4nyx
-export KBUILD_BUILD_HOST=circle
+export KBUILD_BUILD_HOST=circleci
 # sticker plox
 function sticker() {
     curl -s -X POST "https://api.telegram.org/bot$token/sendSticker" \
-        -d sticker="CAADAQADIAADvi-SJWPszXJYuZsgFgQ" \
+        -d sticker="CAACAgEAAxkBAAEJRyNeLAQBsqsQ-nqCBK4Ph0FALp9LBwACKQADvi-SJaJf5A1MOFiHGAQ" \
         -d chat_id="$chat_id"
 }
 # Send info plox channel
@@ -72,7 +72,7 @@ function compile() {
 # Zipping
 function zipping() {
     cd AnyKernel || exit 1
-    zip -r9 LightBorn-EAS-AOSP-10-lavender-${TANGGAL}.zip *
+    zip -r9 Amethyst-EAS-10-lavender-${TANGGAL}.zip *
     cd ..
 }
 compile
