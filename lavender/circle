@@ -27,7 +27,7 @@ function sendinfo() {
         -d chat_id="$chat_id" \
         -d "disable_web_page_preview=true" \
         -d "parse_mode=html" \
-        -d text="New build available!%0ADevice : <code>Xiaomi Redmi Note 7/7S</code>%0ALinux version : <code>${KERNEL}</code>%0AToolchain : <code>${KBUILD_COMPILER_STRING}</code>%0ABranch : <code>${BRANCH}</code>%0ACommit Point : <code>$(git log --pretty=format:'"%h : %s"' -1)</code>"
+        -d text="New build available!%0ADevice : <code>Xiaomi Redmi Note 7/7S</code>%0ALinux version : <code>$KERNEL</code>%0AToolchain : <code>${KBUILD_COMPILER_STRING}</code>%0ABranch : <code>${BRANCH}</code>%0ACommit Point : <code>$(git log --pretty=format:'"%h : %s"' -1)</code>"
 }
 # Push kernel to channel
 function push() {
