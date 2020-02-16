@@ -21,7 +21,6 @@ function sticker() {
         -d chat_id="$chat_id"
 }
 # Send info plox channel
-KERNEL=$(cat out/.config | grep Linux/arm64 | cut -d " " -f3)
 function sendinfo() {
     curl -s -X POST "https://api.telegram.org/bot$token/sendMessage" \
         -d chat_id="$chat_id" \
@@ -79,5 +78,6 @@ function zipping() {
 compile
 zipping
 sticker
+KERNEL=$(cat out/.config | grep Linux/arm64 | cut -d " " -f3)
 sendinfo
 push
