@@ -7,7 +7,6 @@ git clone https://github.com/z4nyx/AnyKernel3.git -b lavender --depth=1 AnyKerne
 echo "Done"
 KERNEL_DIR=$(pwd)
 IMAGE="${KERNEL_DIR}/out/arch/arm64/boot/Image.gz-dtb"
-DTBO="${KERNEL_DIR}/out/arch/arm64/boot/dtbo.img"
 TANGGAL=$(date +"%H-%d%m%Y")
 BRANCH="$(git rev-parse --abbrev-ref HEAD)"
 KERNEL=$(cat out/.config | grep Linux/arm64 | cut -d " " -f3)
@@ -15,7 +14,6 @@ PATH="${KERNEL_DIR}/clang/bin:${KERNEL_DIR}/gcc/bin:${KERNEL_DIR}/gcc32/bin:${PA
 export KBUILD_COMPILER_STRING="$(${KERNEL_DIR}/clang/bin/clang --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/  */ /g')"
 export ARCH=arm64
 export SUBARCH=arm64
-export DTC_EXT=dtc
 export KBUILD_BUILD_USER=z4nyx
 export KBUILD_BUILD_HOST=circleci
 # sticker plox
@@ -72,7 +70,6 @@ function compile() {
     fi
     buildsucs
     cp ${IMAGE} AnyKernel
-    cp ${DTBO} AnyKernel
 }
 # Zipping
 function zipping() {
