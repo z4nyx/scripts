@@ -14,6 +14,8 @@ KERNEL=$(cat out/.config | grep Linux/arm64 | cut -d " " -f3)
 PATH="${KERNEL_DIR}/clang/bin:${KERNEL_DIR}/gcc/bin:${KERNEL_DIR}/gcc32/bin:${PATH}"
 export KBUILD_COMPILER_STRING="$(${KERNEL_DIR}/clang/bin/clang --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/  */ /g')"
 export ARCH=arm64
+export SUBARCH=arm64
+export DTC_EXT=dtc
 export KBUILD_BUILD_USER=z4nyx
 export KBUILD_BUILD_HOST=circleci
 # sticker plox
