@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 echo "Cloning dependencies"
-git clone --depth=1 https://github.com/crdroidandroid/android_prebuilts_clang_host_linux-x86_clang-6189010 clang
+git clone --depth=1 https://github.com/KudProject/prebuilts_clang_host_linux-x86 clang
 git clone --depth=1 https://github.com/KudProject/arm-linux-androideabi-4.9 gcc32
 git clone --depth=1 https://github.com/KudProject/aarch64-linux-android-4.9 gcc
 git clone https://github.com/z4nyx/AnyKernel3.git -b lavender --depth=1 AnyKernel
@@ -72,7 +72,7 @@ function compile() {
 # Zipping
 function zipping() {
     cd AnyKernel || exit 1
-    zip -r9 Amethyst-Q-lavender_${TANGGAL}.zip *
+    zip -r9 Amethyst-Q-lavender-${TANGGAL}.zip *
     cd ..
 }
 compile
