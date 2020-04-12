@@ -72,7 +72,7 @@ function compile() {
 # Zipping
 function zipping() {
     cd AnyKernel || exit 1
-    zip -r9 Amethyst-oldcam-lavender-${TANGGAL}.zip *
+    zip -r9 Amethyst-newcam-lavender-${TANGGAL}.zip *
     cd ..
 }
 compile
