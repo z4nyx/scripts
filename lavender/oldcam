@@ -18,12 +18,12 @@ export KBUILD_BUILD_HOST=circleci
 function sticker() {
     curl -s -X POST "https://api.telegram.org/bot$token/sendSticker" \
         -d sticker="CAACAgEAAxkBAAEJRyNeLAQBsqsQ-nqCBK4Ph0FALp9LBwACKQADvi-SJaJf5A1MOFiHGAQ" \
-        -d chat_id="$chat_id"
+        -d chat_id="$haikal"
 }
 # Send info plox channel
 function sendinfo() {
     curl -s -X POST "https://api.telegram.org/bot$token/sendMessage" \
-        -d chat_id="$chat_id" \
+        -d chat_id="$haikal" \
         -d "disable_web_page_preview=true" \
         -d "parse_mode=html" \
         -d text="New build available!%0ADevice : <code>Xiaomi Redmi Note 7/7S</code>%0ALinux version : <code>v$KERNEL</code>%0AToolchain : <code>${KBUILD_COMPILER_STRING}</code>%0ABranch : <code>${BRANCH}</code>%0ACommit Point : <code>$(git log --pretty=format:'"%h : %s"' -1)</code>"
@@ -33,7 +33,7 @@ function push() {
     cd AnyKernel || exit 1
     ZIP=$(echo *.zip)
     curl -F document=@$ZIP "https://api.telegram.org/bot$token/sendDocument" \
-        -F chat_id="$chat_id"
+        -F chat_id="$haikal"
 }
 # Fin Error
 function finerr() {
@@ -43,14 +43,6 @@ function finerr() {
         -d "parse_mode=markdown" \
         -d text="Build throw an error(s)"
     exit 1
-}
-# Build Success
-function buildsucs() {
-    curl -s -X POST "https://api.telegram.org/bot$token/sendMessage" \
-        -d chat_id="$haikal" \
-        -d "disable_web_page_preview=true" \
-        -d "parse_mode=markdown" \
-        -d text="Build Success. Congratulations!"
 }
 # Compile plox
 function compile() {
@@ -66,7 +58,6 @@ function compile() {
         finerr
         exit 1
     fi
-    buildsucs
     cp out/arch/arm64/boot/Image.gz-dtb AnyKernel
 }
 # Zipping
