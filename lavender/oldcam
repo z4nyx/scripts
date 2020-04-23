@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 echo "Cloning dependencies"
 git clone --depth=1 https://github.com/KudProject/prebuilts_clang_host_linux-x86 clang
-git clone --depth=1 https://github.com/z4nyx/linaro -b arm/latest-7 gcc32
-git clone --depth=1 https://github.com/z4nyx/linaro -b arm64/latest-7 gcc
+git clone --depth=1 https://github.com/KudProject/arm-linux-androideabi-4.9 gcc32
+git clone --depth=1 https://github.com/KudProject/aarch64-linux-android-4.9 gcc
 git clone https://github.com/z4nyx/AnyKernel3.git -b lavender --depth=1 AnyKernel
 echo "Done"
 KERNEL_DIR=$(pwd)
@@ -51,8 +51,8 @@ function compile() {
                     ARCH=arm64 \
                     CC=clang \
                     CLANG_TRIPLE=aarch64-linux-gnu- \
-                    CROSS_COMPILE=aarch64-linux-gnu- \
-                    CROSS_COMPILE_ARM32=arm-linux-gnueabi-
+                    CROSS_COMPILE=aarch64-linux-android- \
+                    CROSS_COMPILE_ARM32=arm-linux-androideabi-
 
     if ! [ -a "$IMAGE" ]; then
         finerr
