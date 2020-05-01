@@ -7,33 +7,20 @@ git clone https://github.com/z4nyx/AnyKernel3.git -b lavender --depth=1 AnyKerne
 echo "Done"
 KERNEL_DIR=$(pwd)
 IMAGE="${KERNEL_DIR}/out/arch/arm64/boot/Image.gz-dtb"
-TANGGAL=$(date +"%H_%Y-%m-%d")
-BRANCH="$(git rev-parse --abbrev-ref HEAD)"
+TANGGAL=$(date +"%H%M-%Y%m%d")
 PATH="${KERNEL_DIR}/clang/bin:${KERNEL_DIR}/gcc/bin:${KERNEL_DIR}/gcc32/bin:${PATH}"
-export KBUILD_COMPILER_STRING="$(${KERNEL_DIR}/clang/bin/clang --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/  */ /g')"
 export ARCH=arm64
 export KBUILD_BUILD_USER=amethyst
 export KBUILD_BUILD_HOST=circleci
-# sticker plox
-function sticker() {
-    curl -s -X POST "https://api.telegram.org/bot$token/sendSticker" \
-        -d sticker="CAACAgEAAxkBAAEJRyNeLAQBsqsQ-nqCBK4Ph0FALp9LBwACKQADvi-SJaJf5A1MOFiHGAQ" \
-        -d chat_id="$haikal"
-}
-# Send info plox channel
-function sendinfo() {
-    curl -s -X POST "https://api.telegram.org/bot$token/sendMessage" \
-        -d chat_id="$haikal" \
-        -d "disable_web_page_preview=true" \
-        -d "parse_mode=html" \
-        -d text="New build available!%0ADevice : <code>Xiaomi Redmi Note 7/7S</code>%0ALinux version : <code>v$KERNEL</code>%0AToolchain : <code>${KBUILD_COMPILER_STRING}</code>%0ABranch : <code>${BRANCH}</code>%0ACommit Point : <code>$(git log --pretty=format:'"%h : %s"' -1)</code>"
-}
 # Push kernel to channel
 function push() {
     cd AnyKernel || exit 1
     ZIP=$(echo *.zip)
     curl -F document=@$ZIP "https://api.telegram.org/bot$token/sendDocument" \
-        -F chat_id="$haikal"
+        -F chat_id="$haikal" \
+        -F "disable_web_page_preview=true" \
+        -F "parse_mode=html" \
+        -F caption="Commit Point : <code>$(git log --pretty=format:'"%h : %s"' -1)</code>"
 }
 # Fin Error
 function finerr() {
@@ -63,12 +50,9 @@ function compile() {
 # Zipping
 function zipping() {
     cd AnyKernel || exit 1
-    zip -r9 Amethyst-newcam-lavender-${TANGGAL}.zip *
+    zip -r9 Amethyst-lavender-${TANGGAL}.zip *
     cd ..
 }
 compile
 zipping
-sticker
-KERNEL=$(cat out/.config | grep Linux/arm64 | cut -d " " -f3)
-sendinfo
 push
