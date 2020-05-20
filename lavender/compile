@@ -10,17 +10,14 @@ IMAGE="${KERNEL_DIR}/out/arch/arm64/boot/Image.gz-dtb"
 TANGGAL=$(date +"%H%M-%Y%m%d")
 PATH="${KERNEL_DIR}/clang/bin:${KERNEL_DIR}/gcc/bin:${KERNEL_DIR}/gcc32/bin:${PATH}"
 export ARCH=arm64
-export KBUILD_BUILD_USER=amethyst
+export KBUILD_BUILD_USER=z4nyx
 export KBUILD_BUILD_HOST=circleci
 # Push kernel to channel
 function push() {
     cd AnyKernel || exit 1
     ZIP=$(echo *.zip)
     curl -F document=@$ZIP "https://api.telegram.org/bot$token/sendDocument" \
-        -F chat_id="$haikal" \
-        -F "disable_web_page_preview=true" \
-        -F "parse_mode=html" \
-        -F caption="Commit Point : <code>$(git log --pretty=format:'"%h : %s"' -1)</code>"
+        -F chat_id="$haikal"
 }
 # Fin Error
 function finerr() {
@@ -50,7 +47,7 @@ function compile() {
 # Zipping
 function zipping() {
     cd AnyKernel || exit 1
-    zip -r9 Amethyst-lavender-${TANGGAL}.zip *
+    zip -r9 Perf+Kernel-lavender-${TANGGAL}.zip *
     cd ..
 }
 compile
