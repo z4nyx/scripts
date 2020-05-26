@@ -28,8 +28,9 @@ function finerr() {
 }
 # Compile plox
 function compile() {
+    mkdir -p out
     make O=out lavender-perf_defconfig
-    make -j$(nproc --all)
+    make O=out -j$(nproc --all)
 
     if ! [ -a "$IMAGE" ]; then
         finerr
