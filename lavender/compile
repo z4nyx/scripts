@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 echo "Cloning dependencies"
-git clone --depth=1 -j$(nproc --all) https://github.com/kdrag0n/proton-clang clang
-git clone --depth=1 -j$(nproc --all) https://github.com/z4nyx/AnyKernel3.git -b lavender --depth=1 AnyKernel
+git clone --depth=1 -j$(nproc --all) https://github.com/KudProject/aarch64-linux-android-4.9 gcc
+git clone --depth=1 -j$(nproc --all) https://github.com/z4nyx/AnyKernel3.git -b lavender AnyKernel
 echo "Done"
 IMAGE="$(pwd)/out/arch/arm64/boot/Image.gz-dtb"
-TANGGAL=$(date +"%H%M-%Y%m%d")
-PATH="$(pwd)/clang/bin:${PATH}"
+TANGGAL=$(date +"%Y%m%d%H")
+GCC="$(pwd)/gcc/bin/aarch64-linux-android-"
 export ARCH=arm64
 export SUBARCH=arm64
 export KBUILD_BUILD_USER=z4nyx
@@ -29,10 +29,7 @@ function finerr() {
 # Compile plox
 function compile() {
     make O=out ARCH=arm64 lavender-perf_defconfig
-    make -j$(nproc --all) O=out \
-                          ARCH=arm64 \
-			  CC=clang \
-			  CROSS_COMPILE=aarch64-linux-gnu-
+    make -j$(nproc --all) O=out ARCH=arm64 CROSS_COMPILE=${GCC}
 
     if ! [ -a "$IMAGE" ]; then
         finerr
@@ -43,7 +40,7 @@ function compile() {
 # Zipping
 function zipping() {
     cd AnyKernel || exit 1
-    zip -r9 Amethyst-lavender-${TANGGAL}.zip *
+    zip -r9 Amethyst-Kernel-lavender-${TANGGAL}.zip *
     cd ..
 }
 compile
